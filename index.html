@@ -4,19 +4,46 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Футбольные прогнозы</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 2em;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 2em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 2em auto;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>⚽ Прогнозы на сегодня</h1>
-    <p id="time"></p>
-    <div id="predictions"></div>
-    <h2>🔊 Озвучка прогноза</h2>
+  <div class="card">
+    <h2>⚽ Прогнозы на сегодня</h2>
+    <ul id="predictions-list"></ul>
+    <h3>🔊 Озвучка прогноза</h3>
     <audio controls>
-      <source src="audio/prediction.mp3" type="audio/mpeg">
+      <source src="prediction.mp3" type="audio/mpeg">
       Ваш браузер не поддерживает аудио.
     </audio>
   </div>
-  <script src="script.js"></script>
+
+  <script>
+    fetch("predictions.json")
+      .then(response => response.json())
+      .then(data => {
+        const list = document.getElementById("predictions-list");
+        data.predictions.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.match}: ${item.prediction}`;
+          list.appendChild(li);
+        });
+      });
+  </script>
 </body>
 </html>
